@@ -1,0 +1,278 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Benzin";
+  src: url("/BENZIN-EXTRABOLD.TTF") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --color-brand: #2ecc71;
+  --color-page-dark: #050505;
+  /* Loaded via index.html Google Fonts link */
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-benzin: "Benzin", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@keyframes floatOrb {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes brandPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes lineScroll {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+@keyframes flagWaveEl {
+  0% {
+    transform: perspective(1200px) rotateY(0deg) skewY(0deg) scaleX(1);
+  }
+  20% {
+    transform: perspective(1200px) rotateY(-2deg) skewY(0.6deg) scaleX(0.988);
+  }
+  40% {
+    transform: perspective(1200px) rotateY(1.5deg) skewY(-0.4deg) scaleX(0.992);
+  }
+  60% {
+    transform: perspective(1200px) rotateY(-3deg) skewY(0.8deg) scaleX(0.984);
+  }
+  80% {
+    transform: perspective(1200px) rotateY(1deg) skewY(-0.2deg) scaleX(0.994);
+  }
+  100% {
+    transform: perspective(1200px) rotateY(0deg) skewY(0deg) scaleX(1);
+  }
+}
+
+@keyframes sheenSlide {
+  0% {
+    transform: translateX(-60%) skewX(-10deg);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(120%) skewX(-10deg);
+    opacity: 0;
+  }
+}
+
+@keyframes marquee-slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Subtle right ↔ left drift for About bridge clouds (wrapper transform) */
+/* default (desktop) */
+@keyframes aboutBridgeCloudDrift {
+  0%,
+  100% {
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(20px);
+  }
+}
+
+/* mobile */
+@media (max-width: 768px) {
+  @keyframes aboutBridgeCloudDrift {
+    0%,
+    100% {
+      transform: translateY(-5px);
+    }
+    50% {
+      transform: translateY(10px);
+    }
+  }
+}
+
+@keyframes aboutBridgeCloudDriftReverse {
+  0%,
+  100% {
+    transform: translateY(20px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+@media (max-width: 768px) {
+  @keyframes aboutBridgeCloudDriftReverse {
+    0%,
+    100% {
+      transform: translateY(10px);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+}
+
+.animate-marquee {
+  animation: marquee-slide 45s linear infinite;
+}
+
+.about-bridge-clouds-drift {
+  animation: aboutBridgeCloudDrift 13s ease-in-out infinite;
+  will-change: transform;
+}
+.about-bridge-clouds-drift-reverse {
+  animation: aboutBridgeCloudDriftReverse 25s ease-in-out infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-bridge-clouds-drift,
+  .about-bridge-clouds-drift-reverse {
+    animation: none;
+    will-change: auto;
+  }
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+@layer base {
+  html,
+  body {
+    background-color: var(--color-page-dark);
+  }
+
+  #root {
+    min-height: 100%;
+    background-color: var(--color-page-dark);
+  }
+
+  html {
+    color-scheme: dark;
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* existing h1–h6 rules stay below */
+}
+
+.skiptranslate iframe,
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+.goog-te-gadget {
+  color: inherit !important;
+  font-family: var(--font-sans) !important;
+  font-size: 0 !important;
+}
+
+.goog-te-gadget .goog-te-combo {
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #e5e5e5 !important;
+  font-size: 12px !important;
+  line-height: 1.25 !important;
+  outline: none !important;
+}
+
+.goog-te-gadget .goog-te-combo option {
+  color: #111 !important;
+}
+
+.google-translate-shell .goog-te-gadget-simple {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.google-translate-shell {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Hide Google Translate built-in loader/overlays and keep custom switcher only */
+.goog-te-spinner-pos,
+#goog-gt-tt,
+.goog-tooltip,
+.goog-text-highlight,
+.goog-te-balloon-frame,
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
+.VIpgJd-ZVi9od-ORHb-OEVmcd {
+  display: none !important;
+  visibility: hidden !important;
+}
