@@ -290,7 +290,7 @@ export function ContactSection() {
                     </div>
                     {variant === 'admin' ? (
                       <div className="mt-2">
-                        <p className="text-[10px] uppercase tracking-widest text-neutral-500">Copy text (optional)</p>
+                        <p className="text-[10px] uppercase tracking-widest text-neutral-500">Хуулах текст (сонголттой)</p>
                         <InlineField
                           variant={variant}
                           className="mt-1 font-mono text-xs text-neutral-300"
@@ -391,7 +391,7 @@ export function ContactSection() {
             disabled={variant === 'admin' || submitState === 'pending'}
             className="w-full rounded-lg bg-emerald-700 px-6 py-3 text-sm font-medium text-white transition hover:bg-emerald-600 disabled:opacity-50"
           >
-            {variant === 'admin' ? 'Submit (disabled in editor)' : submitState === 'pending' ? 'Sending…' : 'Submit'}
+            {variant === 'admin' ? 'Илгээх (засварлагчид идэвхгүй)' : submitState === 'pending' ? 'Sending…' : 'Submit'}
           </button>
           {variant === 'live' && submitMessage ? (
             <p

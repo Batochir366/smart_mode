@@ -119,10 +119,10 @@ function HeadingContent({
         />
       </div>
       <h1 className={`${heroTitleClass} flex flex-col`}>
-        <span className="flex flex-nowrap items-baseline gap-3">
+        <span className="block will-change-transform">
           <InlineField
             variant={variant}
-            className="block whitespace-nowrap will-change-transform"
+            className="block max-w-[95vw] whitespace-normal"
             value={hero.titleLine1}
             onChange={(next) =>
               setData((d) => ({
@@ -131,38 +131,16 @@ function HeadingContent({
               }))
             }
           />
+        </span>
+        <span className="mt-1 block will-change-transform">
           <InlineField
             variant={variant}
-            className={`block whitespace-nowrap will-change-transform ${heroTitleAccentClass}`}
+            className={`block max-w-[95vw] whitespace-normal ${heroTitleAccentClass}`}
             value={hero.titleLine2}
             onChange={(next) =>
               setData((d) => ({
                 ...d,
                 hero: { ...d.hero, titleLine2: next },
-              }))
-            }
-          />
-        </span>
-        <span className="mt-1 flex flex-nowrap items-baseline gap-3">
-          <InlineField
-            variant={variant}
-            className="block whitespace-nowrap will-change-transform"
-            value={hero.titleLine3}
-            onChange={(next) =>
-              setData((d) => ({
-                ...d,
-                hero: { ...d.hero, titleLine3: next },
-              }))
-            }
-          />
-          <InlineField
-            variant={variant}
-            className={`block whitespace-nowrap will-change-transform ${heroTitleAccentClass}`}
-            value={hero.titleLine4}
-            onChange={(next) =>
-              setData((d) => ({
-                ...d,
-                hero: { ...d.hero, titleLine4: next },
               }))
             }
           />
@@ -310,7 +288,7 @@ function HeroSectionAdminVertical() {
   return (
     <div className="border-b border-white/10 bg-black">
       <p className="mx-auto max-w-screen-2xl px-6 pt-4 text-[10px] font-semibold uppercase tracking-[0.35em] text-brand md:px-12">
-        Hero
+        Эх дэлгэц
       </p>
       <section
         id="heroContent"
@@ -320,7 +298,7 @@ function HeroSectionAdminVertical() {
         <div className={`mx-auto flex max-w-screen-2xl flex-col px-6 md:px-12 lg:px-16 ${heroTopPad}`}>
           <HeadingContent variant="admin" />
           <div className="mt-8 max-w-md space-y-2 rounded-lg border border-white/10 bg-neutral-950/60 p-3">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-neutral-400">Trail phrase</p>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-neutral-400">Дагалдах өгүүлбэр</p>
             <InlineField
               variant="admin"
               className="text-sm text-white"

@@ -13,7 +13,7 @@ export default function SiteEditPage() {
   const [saveError, setSaveError] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
 
-  const currentJson = useMemo(() => JSON.stringify(ctx.data), [ctx.data])
+  const currentJson = useMemo(() => JSON.stringify(ctx.bilingual), [ctx.bilingual])
   useEffect(() => {
     if (ctx.loading) return
     queueMicrotask(() => {
@@ -35,11 +35,11 @@ export default function SiteEditPage() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ data: ctx.data }),
+        body: JSON.stringify({ data: ctx.bilingual }),
       })
       const bodyUnknown: unknown = await res.json().catch(() => undefined)
       if (!res.ok) {
-        let msg = 'Save failed'
+        let msg = 'Хадгалалт амжилтгүй'
         if (typeof bodyUnknown === 'object' && bodyUnknown !== null && 'error' in bodyUnknown) {
           const e = (bodyUnknown as { error?: unknown }).error
           if (typeof e === 'string') msg = e
@@ -49,11 +49,11 @@ export default function SiteEditPage() {
       await ctx.refetch()
       const normalized = bodyUnknown as { data?: unknown } | undefined
       const nextJson = JSON.stringify(
-        normalized?.data ?? ctx.data,
+        normalized?.data ?? ctx.bilingual,
       )
       setBaselineJson(nextJson)
     } catch (e) {
-      setSaveError(e instanceof Error ? e.message : 'Save failed')
+      setSaveError(e instanceof Error ? e.message : 'Хадгалалт амжилтгүй')
     } finally {
       setSaving(false)
     }
@@ -64,7 +64,7 @@ export default function SiteEditPage() {
       <div className="pointer-events-none fixed inset-x-0 top-14 z-[60] flex justify-center px-4 sm:top-[4.45rem]">
         <div className="pointer-events-auto flex flex-wrap items-center gap-3 rounded-xl border border-white/10 bg-black/85 px-4 py-3 text-xs text-neutral-200 shadow-xl backdrop-blur-md sm:text-sm">
           <span className="rounded-full bg-white/10 px-2 py-1 font-medium text-neutral-400">
-            {dirty ? 'Unsaved edits' : 'Up to date'}
+            {dirty ? 'Хадгалагдаагүй өөрчлөлт' : 'Хадгалагдсан'}
           </span>
           {saveError ? <span className="font-medium text-red-400">{saveError}</span> : null}
           <button
@@ -73,7 +73,7 @@ export default function SiteEditPage() {
             onClick={() => void onSave()}
             className="rounded-lg bg-brand px-4 py-2 text-sm font-medium text-neutral-950 transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {saving ? 'Saving…' : 'Save changes'}
+            {saving ? 'Хадгалж байна…' : 'Өөрчлөлтийг хадгалах'}
           </button>
           <button
             type="button"
@@ -85,9 +85,9 @@ export default function SiteEditPage() {
               setSaveError(null)
             }}
           >
-            Discard
+            Болих
           </button>
-          <span className="text-neutral-500">Version {ctx.version}</span>
+          <span className="text-neutral-500">Хувилбар {ctx.version}</span>
         </div>
       </div>
 

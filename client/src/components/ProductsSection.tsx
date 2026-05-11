@@ -107,7 +107,7 @@ function ImageCardControlled({
           />
           <div className='flex items-center gap-2'>
             <label className="inline-block cursor-pointer rounded-md border border-brand/35 bg-brand/10 px-2 py-1 text-[11px] text-brand">
-              {busy ? '…' : 'Upload'}
+              {busy ? '…' : 'Оруулах'}
               <input
                 type="file"
                 accept="image/*"
@@ -133,7 +133,7 @@ function ImageCardControlled({
                 className=" w-full rounded-md border border-red-500/30 bg-red-500/10 py-1 text-[11px] font-medium text-red-200 hover:bg-red-500/15"
                 onClick={onRemove}
               >
-                Remove card
+                Карт устгах
               </button>
             ) : null}
           </div>
@@ -279,19 +279,19 @@ export function ProductsSection() {
                           {
                             kind: 'image',
                             id: `prod-${Date.now()}`,
-                            name: 'Name',
-                            roleLine: 'Role',
-                            quote: 'Quote.',
+                            name: 'Нэр',
+                            roleLine: 'Албан тушаал',
+                            quote: 'Иш татах.',
                             imageSrc:
                               'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=700&h=900&fit=crop&q=80',
-                            imageAlt: 'Photo',
+                            imageAlt: 'Зураг',
                           } satisfies ProductCard,
                         ],
                       },
                     }))
                   }
                 >
-                  + Add card
+                  + Карт нэмэх
                 </button>
               </div>
             ) : null}

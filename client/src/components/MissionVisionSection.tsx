@@ -317,15 +317,15 @@ export function MissionVisionSection() {
                         ...d.missionVision.cards,
                         {
                           id: `mv-${Date.now()}`,
-                          title: 'New card',
-                          description: 'Edit this description.',
+                          title: 'Шинэ карт',
+                          description: 'Тайлбарыг энд засна уу.',
                         },
                       ],
                     },
                   }))
                 }
               >
-                Add card
+                Карт нэмэх
               </button>
             </div>
           ) : null}
@@ -389,7 +389,7 @@ export function MissionVisionSection() {
                         }))
                       }
                     >
-                      Remove
+                      Устгах
                     </button>
                   ) : null}
                 </article>

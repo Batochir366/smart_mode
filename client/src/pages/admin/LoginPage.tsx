@@ -22,19 +22,19 @@ export default function LoginPage() {
         body: JSON.stringify({ password }),
       })
       if (!res.ok) {
-        setError('Invalid password')
+        setError('Нууц үг буруу')
         return
       }
       const body = (await res.json()) as { token?: string }
       if (!body.token) {
-        setError('Bad response')
+        setError('Алдаатай хариу')
         return
       }
       writeAdminToken(body.token)
       const target = loc.state?.from?.startsWith('/admin') ? loc.state.from : '/admin/edit'
       nav(target, { replace: true })
     } catch {
-      setError('Could not reach server')
+      setError('Серверт холбогдохгүй байна')
     } finally {
       setPending(false)
     }
@@ -43,12 +43,12 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-black px-4 text-neutral-100">
       <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-neutral-950/80 p-8 shadow-[0_24px_80px_rgba(0,0,0,0.55)] backdrop-blur-md">
-        <h1 className="font-benzin text-2xl font-bold text-white">Admin</h1>
-        <p className="mt-2 text-sm text-neutral-400">Sign in to manage site content and messages.</p>
+        <h1 className="font-benzin text-2xl font-bold text-white">Админ</h1>
+        <p className="mt-2 text-sm text-neutral-400">Сайтын агуулга болон зурвасуудыг удирдахын тулд нэвтэрнэ үү.</p>
         <form className="mt-8 space-y-4" onSubmit={(e) => void handleSubmit(e)}>
           <div>
             <label htmlFor="admin-password" className="text-sm font-medium text-white">
-              Password
+              Нууц үг
             </label>
             <input
               id="admin-password"
@@ -65,12 +65,12 @@ export default function LoginPage() {
             disabled={pending || !password}
             className="w-full rounded-lg bg-emerald-700 px-4 py-3 text-sm font-medium text-white transition hover:bg-emerald-600 disabled:opacity-50"
           >
-            {pending ? 'Signing in…' : 'Sign in'}
+            {pending ? 'Нэвтэрж байна…' : 'Нэвтрэх'}
           </button>
         </form>
         <p className="mt-6 text-center text-xs text-neutral-500">
           <Link className="text-brand hover:underline" to="/">
-            Back to site
+            Сайт руу буцах
           </Link>
         </p>
       </div>

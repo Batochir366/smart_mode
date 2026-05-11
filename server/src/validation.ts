@@ -29,8 +29,6 @@ export const heroSectionSchema = z.object({
   badgeText: z.string(),
   titleLine1: z.string(),
   titleLine2: z.string(),
-  titleLine3: z.string(),
-  titleLine4: z.string(),
   description: z.string(),
   primaryCtaLabel: z.string(),
   secondaryCtaLabel: z.string(),
@@ -91,6 +89,19 @@ export const productsSectionSchema = z.object({
   cards: z.array(productCardSchema),
 })
 
+export const advantagesCardSchema = z.object({
+  id: z.string().min(1),
+  step: z.string(),
+  title: z.string(),
+  description: z.string(),
+})
+
+export const advantagesSectionSchema = z.object({
+  eyebrow: z.string(),
+  title: z.string(),
+  cards: z.array(advantagesCardSchema),
+})
+
 export const footerSectionSchema = z.object({
   logoTop: z.string(),
   logoBottom: z.string(),
@@ -119,9 +130,15 @@ export const siteContentDataSchema = z.object({
   about: aboutPart2Schema,
   missionVision: missionVisionSectionSchema,
   services: servicesSectionSchema,
+  advantages: advantagesSectionSchema,
   products: productsSectionSchema,
   footer: footerSectionSchema,
   ticker: tickerSectionSchema,
+})
+
+export const bilingualSiteContentSchema = z.object({
+  en: siteContentDataSchema,
+  mn: siteContentDataSchema,
 })
 
 export const contactFormSchema = z.object({

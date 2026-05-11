@@ -15,8 +15,8 @@ export function TickerBanner() {
       {variant === 'admin' ? (
         <div className="mx-auto mb-3 w-full max-w-6xl px-6">
           <div className="rounded-lg border border-white/10 bg-black/40 p-3">
-            <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-neutral-400">Ticker editor</p>
-            <p className="mb-2 text-[10px] uppercase tracking-[0.18em] text-neutral-500">Separator</p>
+            <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-neutral-400">Тикер засвар</p>
+            <p className="mb-2 text-[10px] uppercase tracking-[0.18em] text-neutral-500">Тусгаарлагч</p>
             <div className="grid gap-2 md:grid-cols-2">
               <InlineField
                 variant={variant}
@@ -30,7 +30,7 @@ export function TickerBanner() {
                 }
               />
             </div>
-            <p className="mb-2 mt-4 text-[10px] uppercase tracking-[0.18em] text-neutral-500">Items</p>
+            <p className="mb-2 mt-4 text-[10px] uppercase tracking-[0.18em] text-neutral-500">Мөрүүд</p>
             <div className="grid gap-2 md:grid-cols-2">
               {ticker.items.map((item, idx) => (
                 <div key={`ticker-item-${idx}`} className="flex items-center gap-2">
@@ -62,7 +62,7 @@ export function TickerBanner() {
                       }))
                     }
                   >
-                    Remove
+                    Устгах
                   </button>
                 </div>
               ))}
@@ -75,12 +75,12 @@ export function TickerBanner() {
                   ...d,
                   ticker: {
                     ...d.ticker,
-                    items: [...d.ticker.items, 'New ticker item'],
+                    items: [...d.ticker.items, 'Шинэ тикер мөр'],
                   },
                 }))
               }
             >
-              + Add item
+              + Мөр нэмэх
             </button>
           </div>
         </div>

@@ -8,18 +8,18 @@ const linkClass = ({ isActive }: { isActive: boolean }) =>
   `rounded-lg px-3 py-2 text-sm font-medium transition ${isActive ? 'bg-white/10 text-white' : 'text-neutral-400 hover:bg-white/5 hover:text-white'}`
 
 const EDIT_SECTION_LINKS = [
-  { id: 'heroContent', label: 'Hero' },
-  { id: 'about', label: 'About' },
-  { id: 'mission', label: 'Mission' },
-  { id: 'services', label: 'Services' },
-  { id: 'products', label: 'Products' },
-  { id: 'contact', label: 'Contact' },
+  { id: 'heroContent', label: 'Эх дэлгэц' },
+  { id: 'about', label: 'Танилцуулга' },
+  { id: 'mission', label: 'Эрхэм зорилго' },
+  { id: 'services', label: 'Үйлчилгээ' },
+  { id: 'products', label: 'Бүтээгдэхүүн' },
+  { id: 'contact', label: 'Холбоо барих' },
 ] as const
 
 export default function AdminShell() {
   const nav = useNavigate()
   const { pathname } = useLocation()
-  const isWebEdit = /\/admin\/edit\/?$/.test(pathname)
+  const isWebEdit = /\/admin\/edit(\/mn)?\/?$/.test(pathname)
   const [mobileSectionsOpen, setMobileSectionsOpen] = useState(false)
 
   const goToSection = (id: string) => {
@@ -39,10 +39,13 @@ export default function AdminShell() {
 
             <nav className="order-3 flex w-full flex-none items-center gap-2 md:order-none md:flex-1 md:flex-wrap lg:w-auto">
               <NavLink to="/admin/edit" className={linkClass}>
-                Web edit
+                Вэб засвар
+              </NavLink>
+              <NavLink to="/admin/edit/mn" className={linkClass}>
+                Монгол
               </NavLink>
               <NavLink to="/admin/contacts" className={linkClass}>
-                Contacts
+                Зурвасууд
               </NavLink>
 
             </nav>
@@ -53,7 +56,7 @@ export default function AdminShell() {
                 className="rounded-lg border border-white/15 px-3 py-2 text-sm text-neutral-300 transition hover:bg-white/5"
                 onClick={() => nav('/')}
               >
-                View site
+                Сайтыг үзэх
               </button>
               <button
                 type="button"
@@ -63,7 +66,7 @@ export default function AdminShell() {
                   nav('/admin/login', { replace: true })
                 }}
               >
-                Log out
+                Гарах
               </button>
             </div>
           </div>

@@ -9,21 +9,17 @@ import express from "express";
 import rateLimit from "express-rate-limit";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
-import multer from "multer";
 
 import { Buffer } from "node:buffer";
 
-import {
-  DEFAULT_SITE_CONTENT,
-  mergeSiteContent,
-  normalizeProductCardsFromUnknown,
-  type SiteContentData,
-} from "../../client/shared/siteContent.js";
 import { ContactMessage } from "./models/ContactMessage.js";
 import { SiteSettings } from "./models/SiteSettings.js";
 import { requireAuth } from "./middleware/requireAuth.js";
 import { ensureSiteContentSeeded, getMergedSiteContent } from "./seed.js";
-import { contactFormSchema, siteContentDataSchema } from "./validation.js";
+import {
+  bilingualSiteContentSchema,
+  contactFormSchema,
+} from "./validation.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -75,21 +71,6 @@ const contactLimiter = rateLimit({
 });
 
 app.use("/uploads", express.static(UPLOAD_DIR));
-
-const storage = multer.diskStorage({
-  destination(_req, _file, cb) {
-    cb(null, UPLOAD_DIR);
-  },
-  filename(_req, file, cb) {
-    const ext = path.extname(file.originalname || "") || "";
-    const base = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
-    cb(null, `${base}${ext}`);
-  },
-});
-const upload = multer({
-  storage,
-  limits: { fileSize: 8 * 1024 * 1024 },
-});
 
 function cryptoSafeEqual(a: string, b: string): boolean {
   const ba = Buffer.from(a, "utf8");
@@ -153,41 +134,21 @@ app.patch("/api/site-content", requireAuth, async (req, res) => {
       ? req.body.data
       : req.body;
   const body =
-    raw && typeof raw === "object" && !Array.isArray(raw)
-      ? ({ ...raw } as Record<string, unknown>)
-      : {};
-  const productsUnknown = body.products;
-  if (
-    productsUnknown &&
-    typeof productsUnknown === "object" &&
-    !Array.isArray(productsUnknown)
-  ) {
-    const pIn = productsUnknown as { cards?: unknown };
-    if (Array.isArray(pIn.cards)) {
-      const cards = normalizeProductCardsFromUnknown(pIn.cards);
-      if (cards !== undefined) {
-        body.products = {
-          ...(productsUnknown as Record<string, unknown>),
-          cards,
-        };
-      }
-    }
-  }
-  const parsed = siteContentDataSchema.safeParse(body);
+    raw && typeof raw === "object" && !Array.isArray(raw) ? raw : {};
+
+  const parsed = bilingualSiteContentSchema.safeParse(body);
   if (!parsed.success) {
     res
       .status(400)
       .json({ error: "Invalid site content", details: parsed.error.flatten() });
     return;
   }
-  const data: SiteContentData = parsed.data;
-  const normalized = mergeSiteContent(DEFAULT_SITE_CONTENT, data);
 
   const doc =
     (await SiteSettings.findOne({ key: MAIN_KEY }).exec()) ??
     new SiteSettings({ key: MAIN_KEY });
 
-  doc.data = normalized;
+  doc.data = parsed.data;
   doc.version = (doc.version ?? 1) + 1;
   doc.updatedAt = new Date();
   await doc.save();
@@ -195,7 +156,7 @@ app.patch("/api/site-content", requireAuth, async (req, res) => {
   res.json({
     version: doc.version,
     updatedAt: doc.updatedAt?.toISOString() ?? new Date().toISOString(),
-    data: normalized,
+    data: parsed.data,
   });
 });
 
@@ -230,20 +191,6 @@ app.delete("/api/contact-messages/:id", requireAuth, async (req, res) => {
     return;
   }
   res.status(204).send();
-});
-
-app.post("/api/upload", requireAuth, upload.single("file"), (req, res) => {
-  if (!req.file) {
-    res.status(400).json({ error: 'Missing file field "file"' });
-    return;
-  }
-  const publicPath = `/uploads/${encodeURIComponent(req.file.filename)}`;
-  const base = `${req.protocol}://${req.get("host") ?? `localhost:${PORT}`}`;
-  res.json({
-    filename: req.file.filename,
-    url: `${base}${publicPath}`,
-    path: publicPath,
-  });
 });
 
 async function main() {

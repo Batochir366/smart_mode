@@ -36,7 +36,7 @@ function ServicesSlideEditorList() {
     <div
       id="services"
       className="scroll-mt-24 border-t border-white/10 bg-black px-6 py-14 text-neutral-100 md:px-12 lg:px-16"
-      aria-label="Services — edit"
+      aria-label="Үйлчилгээ — засвар"
     >
       <div className="mx-auto max-w-screen-2xl">
         <div className="mb-10 flex max-w-screen-2xl flex-col gap-4 sm:flex-row sm:items-center justify-between">
@@ -78,9 +78,9 @@ function ServicesSlideEditorList() {
                     ...d.services.slides,
                     {
                       id: `svc-${Date.now()}`,
-                      heading: 'New slide',
-                      headerDesc: 'Add header description',
-                      productDesc: 'Add product description',
+                      heading: 'Шинэ слайд',
+                      headerDesc: 'Толгойн тайлбар оруулна уу',
+                      productDesc: 'Бүтээгдэхүүний тайлбар оруулна уу',
                       imageUrl: 'https://picsum.photos/seed/services-new/1920/1080',
                     },
                   ],
@@ -88,7 +88,7 @@ function ServicesSlideEditorList() {
               }))
             }
           >
-            + Add slide
+            + Слайд нэмэх
           </button>
         </div>
 
@@ -110,7 +110,7 @@ function ServicesSlideEditorList() {
               <div className="max-h-[min(50vh,420px)] min-h-0 shrink-0 space-y-3 overflow-y-auto border-t border-white/10 p-5">
                 <div className="flex items-start justify-between gap-2 border-b border-white/10 pb-3">
                   <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">
-                    Slide {i + 1}
+                    Слайд {i + 1}
                   </span>
 
                 </div>
@@ -131,7 +131,7 @@ function ServicesSlideEditorList() {
 
                 <div>
                   <p className="text-[10px] uppercase tracking-widest text-neutral-500">
-                    Product description
+                    Бүтээгдэхүүний тайлбар
                   </p>
                   <InlineField
                     variant="admin"
@@ -149,7 +149,7 @@ function ServicesSlideEditorList() {
                 </div>
 
                 <div>
-                  <p className="text-[10px] uppercase tracking-widest text-neutral-500">Image URL</p>
+                  <p className="text-[10px] uppercase tracking-widest text-neutral-500">Зургийн холбоос</p>
                   <InlineField
                     variant="admin"
                     className="mt-1 font-mono text-xs text-white"
@@ -167,7 +167,7 @@ function ServicesSlideEditorList() {
 
                 <div className="flex gap-2 w-full">
                   <label className="cursor-pointer rounded-md border border-brand/35 bg-brand/10 px-3 py-1 text-xs text-brand hover:bg-brand/20">
-                    {uploadBusySlide === i ? 'Uploading…' : 'Upload'}
+                    {uploadBusySlide === i ? 'Оруулж байна…' : 'Оруулах'}
                     <input
                       type="file"
                       accept="image/*"
@@ -207,7 +207,7 @@ function ServicesSlideEditorList() {
                         }))
                       }
                     >
-                      Remove
+                      Устгах
                     </button>
                   ) : null}
                 </div>

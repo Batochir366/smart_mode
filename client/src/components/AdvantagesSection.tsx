@@ -101,18 +101,20 @@ export function AdvantagesSection() {
       aria-label="Process"
     >
       <div className="mx-auto max-w-screen-2xl">
-        <InlineField
-          variant={variant}
-          className="text-[11px] font-semibold uppercase tracking-[0.28em] text-brand/80"
-          value={adv.eyebrow}
-          onChange={(next) => setData((d) => ({ ...d, advantages: { ...d.advantages, eyebrow: next } }))}
-        />
-        <InlineField
-          variant={variant}
-          className="mt-3 text-4xl font-semibold font-benzin tracking-tight text-white md:text-5xl"
-          value={adv.title}
-          onChange={(next) => setData((d) => ({ ...d, advantages: { ...d.advantages, title: next } }))}
-        />
+        <div className='flex flex-col'>
+          <InlineField
+            variant={variant}
+            className="text-[11px] font-semibold uppercase tracking-[0.28em] text-brand/80"
+            value={adv.eyebrow}
+            onChange={(next) => setData((d) => ({ ...d, advantages: { ...d.advantages, eyebrow: next } }))}
+          />
+          <InlineField
+            variant={variant}
+            className="mt-3 text-4xl font-semibold font-benzin tracking-tight text-white md:text-5xl"
+            value={adv.title}
+            onChange={(next) => setData((d) => ({ ...d, advantages: { ...d.advantages, title: next } }))}
+          />
+        </div>
 
         {variant === 'admin' ? (
           <div className="mt-4">
@@ -129,15 +131,15 @@ export function AdvantagesSection() {
                       {
                         id: `adv-${Date.now()}`,
                         step: String(d.advantages.cards.length + 1).padStart(2, '0'),
-                        title: 'New card',
-                        description: 'Edit this advantage description.',
+                        title: 'Шинэ карт',
+                        description: 'Энэ давуу талын тайлбарыг энд засна уу.',
                       },
                     ],
                   },
                 }))
               }
             >
-              Add card
+              Карт нэмэх
             </button>
           </div>
         ) : null}
@@ -150,21 +152,6 @@ export function AdvantagesSection() {
             >
               <div className="pointer-events-none absolute -bottom-20 -left-20 h-52 w-52 rounded-full bg-brand/25 blur-3xl transition-opacity duration-300 group-hover:opacity-90" />
               <div className="relative z-10 flex h-full flex-col">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-sm font-bold text-neutral-950">
-                  <InlineField
-                    variant={variant}
-                    className="text-sm font-bold text-neutral-950"
-                    value={card.step}
-                    onChange={(next) =>
-                      setData((d) => {
-                        const nextCards = [...d.advantages.cards]
-                        if (!nextCards[i]) return d
-                        nextCards[i] = { ...nextCards[i], step: next.slice(0, 2) }
-                        return { ...d, advantages: { ...d.advantages, cards: nextCards } }
-                      })
-                    }
-                  />
-                </span>
                 <InlineField
                   variant={variant}
                   className="mt-6 text-2xl font-semibold tracking-tight text-white"
@@ -220,7 +207,7 @@ export function AdvantagesSection() {
                       }))
                     }
                   >
-                    Remove
+                    Устгах
                   </button>
                 ) : null}
               </div>

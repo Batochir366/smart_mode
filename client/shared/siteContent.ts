@@ -43,8 +43,6 @@ export type HeroSectionContent = {
   badgeText: string;
   titleLine1: string;
   titleLine2: string;
-  titleLine3: string;
-  titleLine4: string;
   description: string;
   primaryCtaLabel: string;
   secondaryCtaLabel: string;
@@ -139,19 +137,26 @@ export type SiteContentData = {
   ticker: TickerSectionContent;
 };
 
+export type SiteLocale = "en" | "mn";
+
+/** Stored in Mongo `SiteSettings.data` — English + Mongolian home payloads. */
+export type BilingualSiteContent = {
+  en: SiteContentData;
+  mn: SiteContentData;
+};
+
 export type SiteContentApiResponse = {
   version: number;
   updatedAt: string;
-  data: SiteContentData;
+  data: BilingualSiteContent;
 };
 
+/** English defaults (primary). Mongolian: `DEFAULT_SITE_CONTENT_MN`. */
 export const DEFAULT_SITE_CONTENT: SiteContentData = {
   hero: {
     badgeText: "Est. 2017 · Medical technology",
-    titleLine1: "Build",
-    titleLine2: "Smarter",
-    titleLine3: "Grow",
-    titleLine4: "Faster.",
+    titleLine1: "Build Smarter",
+    titleLine2: "Grow Faster.",
     description:
       "Mongolia's leading provider of smart, portable, and AI-powered medical devices and healthcare solutions.",
     primaryCtaLabel: "Explore Products",
@@ -462,171 +467,373 @@ export const DEFAULT_SITE_CONTENT: SiteContentData = {
   },
 };
 
+export const DEFAULT_SITE_CONTENT_MN: SiteContentData = {
+  hero: {
+    badgeText: "2017 онд үүсгэсэн · Эмнэлгийн технологи",
+    titleLine1: "Ухаалагаар бүтээ",
+    titleLine2: "Хурдан өс.",
+    description:
+      "Монгол Улсад ухаалаг, зөөврийн, хиймэл оюун ухаанд суурилсан эмнэлгийн хэрэгсэл болон эрүүл мэндийн шийдлүүдийг нийлүүлдэг тэргүүлэгч компани.",
+    primaryCtaLabel: "Бүтээгдэхүүн үзэх",
+    secondaryCtaLabel: "Бидний түүх",
+    trailPhrase: "Энгийн болгоё.",
+    stats: [
+      {
+        id: "hero-stat-years",
+        value: "20",
+        suffix: "+",
+        label: "Шинэлэгийн жил",
+      },
+      {
+        id: "hero-stat-brands",
+        value: "8",
+        suffix: "+",
+        label: "Үндсэн брэнд",
+      },
+      {
+        id: "hero-stat-devices",
+        value: "3",
+        suffix: "K+",
+        label: "Суурилуулсан төхөөрөмж",
+        highlight: true,
+      },
+    ],
+  },
+  contact: {
+    eyebrow: "Холбоо барих",
+    title: "Холбоо барих",
+    info: [
+      {
+        id: "contact-mail",
+        label: "И-мэйл",
+        value: "info@smartmode.mn",
+        icon: "mail",
+      },
+      {
+        id: "contact-phone",
+        label: "Утас",
+        value: "+976 7711 6644",
+        copyText: "+97677116644",
+        icon: "phone",
+      },
+      {
+        id: "contact-office",
+        label: "Хаяг",
+        value: "Улаанбаатар, Монгол Улс — www.smartmode.mn",
+        copyText: "Улаанбаатар, Монгол Улс — https://www.smartmode.mn",
+        icon: "pin",
+      },
+    ],
+  },
+  about: {
+    eyebrow: "Бидний тухай",
+    titleLine1: "Ухаалаг эм",
+    titleLine2Prefix: "Бүх ",
+    titleHighlight: "хүнд",
+    paragraphs: [
+      "Смарт Мод ХХК нь 2017 онд байгуулагдаж, эмнэлгийн хэрэгслийн салбарт үйл ажиллагаа явуулдаг. Бид эрүүл мэндийн үйлчилгээнд хүртээмж, үр ашгийг нэмэгдүүлэх орчин үеийн ухаалаг, зөөврийн шийдлүүдийг нийлүүлэхэд төвлөрдөг.",
+      "Өмнөх эрүүл мэндийн хянагчаас эхлээд хиймэл оюун ухаанд суурилсан оношлогооны платформ хүртэл — шинэ технологи, өдөр тутмын эмнэлзүйн практикийг холбож, чанартай тусламжийг хаана ч, хэзээ ч боломжтой болгоно.",
+    ],
+    ctaLabel: "Хамтран ажиллах",
+  },
+  missionVision: {
+    headerEyebrow: "Бидний үндэс",
+    headerTitleLine1: "Эрхэм зорилго, алсын",
+    headerTitleLine2: "хараа ба ",
+    headerTitleHighlight: "үзэл баримтлал",
+    cards: [
+      {
+        id: "mv-mission",
+        title: "Эрхэм зорилго",
+        description:
+          "Ашиглахад хялбар, зөөврийн, өндөр үр ашигтай эмнэлгийн хэрэгслээр эмч, өвчтөн хоёуланд хүч өгч, эрүүл мэндийн тусламжийн чанарыг дээшлүүлнэ.",
+      },
+      {
+        id: "mv-vision",
+        title: "Алсын хараа",
+        description:
+          "Ухаалаг, зөөврийн эмнэлгийн технологийн тэргүүлэгч нийлүүлэгч болж, Монгол болон түүнээс цааш өндөр түвшний эмчилгээнд хүртээмжийг нээх.",
+      },
+      {
+        id: "mv-quality",
+        title: "Чанар",
+        description: "Нийлүүлэх бүх төхөөрөмжид эргэлзээгүй стандарт.",
+      },
+      {
+        id: "mv-innovation",
+        title: "Шинэлэг",
+        description: "Эмнэлгийн технологийн хязгаарыг тасралтгүй өргөжүүлнэ.",
+      },
+      {
+        id: "mv-trust",
+        title: "Итгэлцэл",
+        description:
+          "Үйлчлүүлэгч, түншүүдтэй урт хугацааны харилцаа холбоо тогтооно.",
+      },
+    ],
+  },
+  services: {
+    headerLeft: "Үйлчилгээ",
+    headerLinkLabel: "Урам зориг",
+    slides: [
+      {
+        id: "svc-1",
+        heading: "Ухаалаг эмнэлгийн хэрэгсэл",
+        headerDesc: "Дараах бүтээгдэхүүн, шийдлүүдийг санал болгож байна",
+        productDesc:
+          "Цаг хугацааны эрүүл мэндийн мэдээлэл, урьдчилан сэргийлэх үзлэгийг дэмжих зөөвсөр холбогдсон төхөөрөмжүүд.",
+        imageUrl: "https://picsum.photos/seed/smartmode-services-1/1920/1080",
+      },
+      {
+        id: "svc-2",
+        heading: "Зөөврийн оношлуурын төхөөрөмж",
+        headerDesc: "Тусламж үзүүлж байгаа газар хаана ч хурдан оношилгоо",
+        productDesc:
+          "Аль ч нөхцөлд скрининг, эмнэлзүйн ангилал, цэгийн тусламжийн шийдвэрийг дэмжих зөөврийн хэрэгсэл.",
+        imageUrl: "https://picsum.photos/seed/smartmode-services-2/1920/1080",
+      },
+      {
+        id: "svc-3",
+        heading: "Технологид суурилсан эрүүл мэндийн шийдэл",
+        headerDesc: "Орчин үеийн эмнэлгийн багийн нэгдсэн системүүд",
+        productDesc:
+          "Эмчилгээний бүх үе шатыг төхөөрөмж, урсгал, дүн шинжилгээгээр холбох өгөгдөлд суурилсан платформууд.",
+        imageUrl: "https://picsum.photos/seed/smartmode-services-3/1920/1080",
+        backgroundPosition: "50% 45%",
+      },
+    ],
+  },
+  advantages: {
+    eyebrow: "Давуу тал",
+    title: "Яагаад Смарт Мод вэ?",
+    cards: [
+      {
+        id: "adv-01",
+        step: "01",
+        title: "Ажлын урсгалаа хуваалцаарай",
+        description:
+          "Хэрэглэгч олж авахаас эхлээд бүртгэл хүртэлх ажлын урсгал, ашиглаж байгаа хэрэгслүүдээ бидэнтэй хуваалцаарай.",
+      },
+      {
+        id: "adv-02",
+        step: "02",
+        title: "Бид системийг бүтээнэ",
+        description:
+          "Таны хэрэгслүүдийг холбож, хиймэл оюун ухаанд суурилсан автоматжуулалтыг тохируулан ажил тань өөрөө явагдахаар зохион бүтээнэ.",
+      },
+      {
+        id: "adv-03",
+        step: "03",
+        title: "Нээж, хяналтаа атгаарай",
+        description:
+          "Бүх зүйлийг хялбар удирдах заавартай, шууд ашиглах боломжтой самбарыг гардуулна.",
+      },
+      {
+        id: "adv-04",
+        step: "04",
+        title: "Өргөтгөх боломжтой, уян хатан",
+        description:
+          "Бизнес өсөхтэй эвсэлдэн шинэ хэрэгсэл, урсгалд тохируулах систем — та өөрөө бага зүйл хийхэд л хангалттай.",
+      },
+    ],
+  },
+  products: {
+    eyebrow: "Бүтээгдэхүүн",
+    title: "Илүү ухаалаг тусламжийг юу хангаж байна вэ",
+    cards: [
+      {
+        kind: "image",
+        id: "prod-001",
+        name: "Эмч Батбаяр Энхтуяа",
+        roleLine: "Телеметрийн тасгийн дарга · УБ-ын Нэгдүгээр Төв Эмнэлэг",
+        quote:
+          "Өрөөний үзүүлэлт тасралтгүй хянагдаж, ор дээрх утас багасаж, өвчтөний байдал өөрчлөгдөхөд шууд арга хэмжээ авах зам илүү тод болсон.",
+        imageSrc:
+          "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=700&h=900&fit=crop&q=80",
+        imageAlt: "Өвчний мэдээлэл шалгаж буй эмнэлгийн мэргэжилтэн",
+      },
+      {
+        kind: "image",
+        id: "prod-002",
+        name: "Болормаа Алтангэрэл",
+        roleLine: "Сумын эрүүл мэндийн төв · Архангай аймаг",
+        quote:
+          "Зөөврийн оношлуур хэдхэн хоногт ирж, тохируулга, чанарын шалгалт эхний уулзалтаас өмнө автоматаар ажилласан.",
+        imageSrc:
+          "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=700&h=900&fit=crop&q=80",
+        imageAlt: "Болормаа Алтангэрэл",
+      },
+      {
+        kind: "image",
+        id: "prod-003",
+        name: "Эмч Ганболд Сүхбат",
+        roleLine: "Яарайтын тасаг · Интермед эмнэлэг, Улаанбаатар",
+        quote:
+          "Яарайтын тасагт хурдан асаадаг, найдвартай дүрс оношилгоо ангиллыг өөрчилнө — тогтвортой өвчтөнийг хотоос өөр эмнэлэг рүү илгээх шаардлага багасна.",
+        imageSrc:
+          "https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=700&h=900&fit=crop&q=80",
+        imageAlt: "Оношлуурын төхөөрөмжтэй эмнэлгийн өрөө",
+      },
+      {
+        kind: "image",
+        id: "prod-004",
+        name: "Түмэрхуяг Баярсайхан",
+        roleLine: "Гүйцэтгэх захирал · Хан-Уул дүүргийн нэгдсэн эмнэлэг",
+        quote:
+          "Ажлын урсгалын ихэнх хэсэг автоматжсанаар эмч нар долоо хоногт олон цаг хэмнэж байна. Нэвтрүүлэлт нь өвчтөний урсгалыг тасалдуулаагүй.",
+        imageSrc:
+          "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=700&h=900&fit=crop&q=80",
+        imageAlt: "Түмэрхуяг Баярсайхан",
+      },
+      {
+        kind: "image",
+        id: "prod-005",
+        name: "Саранцэцэг Долгор",
+        roleLine: "Сувилах тусламжийн захирал · Эх, хүүхдийн үндэсний төв",
+        quote:
+          "Төхөөрөмжийн мэдээлэл нэгдсэн хяналтын төвтэй холбогдсон тул хүснэгт хөөцөлдөх биш, эрсдэлийг эрт илрүүлж байна.",
+        imageSrc:
+          "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=700&h=900&fit=crop&q=80",
+        imageAlt: "Орчин үеийн эмнэлэгт хамтран ажиллаж буй баг",
+      },
+      {
+        kind: "image",
+        id: "prod-006",
+        name: "Эмч Батбаяр Энхтуяа",
+        roleLine: "Телеметрийн тасгийн дарга · УБ-ын Нэгдүгээр Төв Эмнэлэг",
+        quote:
+          "Өрөөний үзүүлэлт тасралтгүй хянагдаж, ор дээрх утас багасаж, өвчтөний байдал өөрчлөгдөхөд шууд арга хэмжээ авах зам илүү тод болсон.",
+        imageSrc:
+          "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=700&h=900&fit=crop&q=80",
+        imageAlt: "Өвчний мэдээлэл шалгаж буй эмнэлгийн мэргэжилтэн",
+      },
+      {
+        kind: "image",
+        id: "prod-007",
+        name: "Болормаа Алтангэрэл",
+        roleLine: "Сумын эрүүл мэндийн төв · Архангай аймаг",
+        quote:
+          "Зөөврийн оношлуур хэдхэн хоногт ирж, тохируулга, чанарын шалгалт эхний уулзалтаас өмнө автоматаар ажилласан.",
+        imageSrc:
+          "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=700&h=900&fit=crop&q=80",
+        imageAlt: "Болормаа Алтангэрэл",
+      },
+      {
+        kind: "image",
+        id: "prod-008",
+        name: "Эмч Ганболд Сүхбат",
+        roleLine: "Яарайтын тасаг · Интермед эмнэлэг, Улаанбаатар",
+        quote:
+          "Яарайтын тасагт хурдан асаадаг, найдвартай дүрс оношилгоо ангиллыг өөрчилнө — тогтвортой өвчтөнийг хотоос өөр эмнэлэг рүү илгээх шаардлага багасна.",
+        imageSrc:
+          "https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=700&h=900&fit=crop&q=80",
+        imageAlt: "Оношлуурын төхөөрөмжтэй эмнэлгийн өрөө",
+      },
+      {
+        kind: "image",
+        id: "prod-009",
+        name: "Түмэрхуяг Баярсайхан",
+        roleLine: "Гүйцэтгэх захирал · Хан-Уул дүүргийн нэгдсэн эмнэлэг",
+        quote:
+          "Ажлын урсгалын ихэнх хэсэг автоматжсанаар эмч нар долоо хоногт олон цаг хэмнэж байна. Нэвтрүүлэлт нь өвчтөний урсгалыг тасалдуулаагүй.",
+        imageSrc:
+          "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=700&h=900&fit=crop&q=80",
+        imageAlt: "Түмэрхуяг Баярсайхан",
+      },
+      {
+        kind: "image",
+        id: "prod-010",
+        name: "Саранцэцэг Долгор",
+        roleLine: "Сувилах тусламжийн захирал · Эх, хүүхдийн үндэсний төв",
+        quote:
+          "Төхөөрөмжийн мэдээлэл нэгдсэн хяналтын төвтэй холбогдсон тул хүснэгт хөөцөлдөх биш, эрсдэлийг эрт илрүүлж байна.",
+        imageSrc:
+          "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=700&h=900&fit=crop&q=80",
+        imageAlt: "Орчин үеийн эмнэлэгт хамтран ажиллаж буй баг",
+      },
+    ],
+  },
+  footer: {
+    logoTop: "Smart",
+    logoBottom: "MODE",
+    taglineLine1: "Бүтээ",
+    taglineHighlight: "Ухаалагаар",
+    taglineLine2: "Хурдан өс.",
+    qrUrl: "https://www.smartmode.mn",
+    qrLabel: "www.smartmode.mn",
+    phonePrefix: "+976",
+    phoneValue: "77116644",
+    webPrefix: "www.",
+    webValue: "smartmode.mn",
+    emailPrefix: "info@",
+    emailValue: "smartmode.mn",
+    copyrightText: "Смарт Мод ХХК. Бүх эрх хуулиар хамгаалагдсан.",
+  },
+  ticker: {
+    items: [
+      "Ухаалаг эмнэлгийн хэрэгсэл",
+      "Зөөврийн оношилгоо",
+      "Хиймэл оюун ухаанд суурилсан эрүүл мэнд",
+      "Ухаалагаар бүтээ, хурдаар өс",
+      "Монголын эрүүл мэндийн тэргүүлэгч түнш",
+    ],
+    separator: "✦",
+  },
+};
+
+export const DEFAULT_BILINGUAL: BilingualSiteContent = {
+  en: DEFAULT_SITE_CONTENT,
+  mn: DEFAULT_SITE_CONTENT_MN,
+};
+
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === "object" && !Array.isArray(value);
 }
 
-const DEFAULT_PRODUCT_IMAGE =
-  "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=700&h=900&fit=crop&q=80";
-
-/** Legacy DB rows may include removed `gradient` quote cards — coerce to image cards. */
-export function normalizeProductCardsFromUnknown(
-  raw: unknown,
-): ProductCard[] | undefined {
-  if (!Array.isArray(raw)) return undefined;
-  const out: ProductCard[] = [];
-  for (const item of raw) {
-    if (!isPlainObject(item)) continue;
-    const id =
-      typeof item.id === "string" && item.id.length > 0
-        ? item.id
-        : `prod-${out.length}`;
-    const name = typeof item.name === "string" ? item.name : "Name";
-    const roleLine = typeof item.roleLine === "string" ? item.roleLine : "Role";
-
-    if (item.kind === "image") {
-      const quote = typeof item.quote === "string" ? item.quote : "";
-      const imageSrc =
-        typeof item.imageSrc === "string"
-          ? item.imageSrc
-          : DEFAULT_PRODUCT_IMAGE;
-      const imageAlt =
-        typeof item.imageAlt === "string" ? item.imageAlt : `${name} photo`;
-      out.push({
-        kind: "image",
-        id,
-        name,
-        roleLine,
-        quote,
-        imageSrc,
-        imageAlt,
-      });
-      continue;
-    }
-
-    if (item.kind === "gradient") {
-      const quote = typeof item.blurb === "string" ? item.blurb : "";
-      out.push({
-        kind: "image",
-        id,
-        name,
-        roleLine,
-        quote,
-        imageSrc: DEFAULT_PRODUCT_IMAGE,
-        imageAlt: `${name} photo`,
-      });
-    }
-  }
-  return out.length > 0 ? out : undefined;
+/** Minimal shape check so we do not treat arbitrary JSON as site content. */
+function isSiteContentDataLike(value: unknown): value is SiteContentData {
+  if (!isPlainObject(value)) return false;
+  return (
+    "hero" in value &&
+    "contact" in value &&
+    "about" in value &&
+    "missionVision" in value &&
+    "services" in value &&
+    "advantages" in value &&
+    "products" in value &&
+    "footer" in value &&
+    "ticker" in value
+  );
 }
 
-/** Deep-merge partial API payload over defaults so older DB rows stay compatible. */
-export function mergeSiteContent(
-  defaults: SiteContentData,
-  partial: unknown,
-): SiteContentData {
-  if (!isPlainObject(partial)) return defaults;
-  const out: SiteContentData = { ...defaults };
-  (Object.keys(defaults) as (keyof SiteContentData)[]).forEach((key) => {
-    const patch = partial[key];
-    if (patch === undefined) return;
-    if (key === "contact" && isPlainObject(patch)) {
-      out.contact = {
-        ...defaults.contact,
-        ...patch,
-        info: Array.isArray(patch.info)
-          ? (patch.info as ContactInfoItem[])
-          : defaults.contact.info,
-      };
-      return;
-    }
-    if (key === "hero" && isPlainObject(patch)) {
-      const p = patch as Partial<HeroSectionContent>;
-      out.hero = {
-        ...defaults.hero,
-        ...p,
-        stats: Array.isArray(p.stats)
-          ? (p.stats as HeroStatItem[])
-          : defaults.hero.stats,
-      };
-      return;
-    }
-    if (key === "about" && isPlainObject(patch)) {
-      const p = patch as Partial<AboutPart2Content>;
-      out.about = {
-        ...defaults.about,
-        ...p,
-        paragraphs:
-          Array.isArray(p.paragraphs) && p.paragraphs.length >= 2
-            ? ([p.paragraphs[0], p.paragraphs[1]] as [string, string])
-            : defaults.about.paragraphs,
-      };
-      return;
-    }
-    if (key === "missionVision" && isPlainObject(patch)) {
-      const p = patch as Partial<MissionVisionSectionContent>;
-      out.missionVision = {
-        ...defaults.missionVision,
-        ...p,
-        cards: Array.isArray(p.cards)
-          ? (p.cards as MissionVisionCard[])
-          : defaults.missionVision.cards,
-      };
-      return;
-    }
-    if (key === "services" && isPlainObject(patch)) {
-      const p = patch as Partial<ServicesSectionContent>;
-      out.services = {
-        ...defaults.services,
-        ...p,
-        slides: Array.isArray(p.slides)
-          ? (p.slides as ServiceSlide[])
-          : defaults.services.slides,
-      };
-      return;
-    }
-    if (key === "advantages" && isPlainObject(patch)) {
-      const p = patch as Partial<AdvantagesSectionContent>;
-      out.advantages = {
-        ...defaults.advantages,
-        ...p,
-        cards: Array.isArray(p.cards)
-          ? (p.cards as AdvantagesCard[])
-          : defaults.advantages.cards,
-      };
-      return;
-    }
-    if (key === "products" && isPlainObject(patch)) {
-      const p = patch as Partial<ProductsSectionContent>;
-      let cards = defaults.products.cards;
-      if (Array.isArray(p.cards)) {
-        const normalized = normalizeProductCardsFromUnknown(p.cards);
-        if (normalized !== undefined) cards = normalized;
-      }
-      out.products = {
-        ...defaults.products,
-        ...p,
-        cards,
-      };
-      return;
-    }
-    if (key === "footer" && isPlainObject(patch)) {
-      out.footer = {
-        ...defaults.footer,
-        ...(patch as Partial<FooterSectionContent>),
-      };
-      return;
-    }
-    if (key === "ticker" && isPlainObject(patch)) {
-      const p = patch as Partial<TickerSectionContent>;
-      out.ticker = {
-        ...defaults.ticker,
-        ...p,
-        items: Array.isArray(p.items)
-          ? p.items.filter((v): v is string => typeof v === "string")
-          : defaults.ticker.items,
-      };
-    }
-  });
-  return out;
+/**
+ * Build a complete `{ en, mn }` payload from the API.
+ * Uses DB fields when present; fills gaps from `DEFAULT_SITE_CONTENT` / `DEFAULT_SITE_CONTENT_MN`.
+ * For fetch errors, pass `undefined` — same as bundled defaults (lines above).
+ */
+export function normalizeBilingualFromApi(raw: unknown): BilingualSiteContent {
+  if (!isPlainObject(raw)) {
+    return structuredClone(DEFAULT_BILINGUAL) as BilingualSiteContent;
+  }
+
+  const o = raw as Record<string, unknown>;
+
+  if (!("en" in o) && !("mn" in o) && isSiteContentDataLike(raw)) {
+    return {
+      en: structuredClone(raw as SiteContentData),
+      mn: structuredClone(DEFAULT_SITE_CONTENT_MN) as SiteContentData,
+    };
+  }
+
+  const enRaw = o.en;
+  const mnRaw = o.mn;
+
+  const en = isSiteContentDataLike(enRaw)
+    ? (structuredClone(enRaw as SiteContentData) as SiteContentData)
+    : (structuredClone(DEFAULT_SITE_CONTENT) as SiteContentData);
+  const mn = isSiteContentDataLike(mnRaw)
+    ? (structuredClone(mnRaw as SiteContentData) as SiteContentData)
+    : (structuredClone(DEFAULT_SITE_CONTENT_MN) as SiteContentData);
+
+  return { en, mn };
 }

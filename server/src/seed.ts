@@ -1,16 +1,12 @@
 import { SiteSettings } from "./models/SiteSettings.js";
 
-import type { SiteContentData } from "../../client/shared/siteContent.js";
-import {
-  DEFAULT_SITE_CONTENT,
-  mergeSiteContent,
-} from "../../client/shared/siteContent.js";
+import type { BilingualSiteContent } from "../../client/shared/siteContent.js";
+import { normalizeBilingualFromApi } from "../../client/shared/siteContent.js";
 
 const MAIN_KEY = "main";
 
-function cloneDefaults(): SiteContentData {
-  const sc = structuredClone(DEFAULT_SITE_CONTENT) as SiteContentData;
-  return sc;
+function cloneDefaults(): BilingualSiteContent {
+  return normalizeBilingualFromApi(undefined);
 }
 
 /** Creates the main settings row once. */
@@ -25,8 +21,7 @@ export async function ensureSiteContentSeeded(): Promise<void> {
   });
 }
 
-export async function getMergedSiteContent(): Promise<SiteContentData> {
+export async function getMergedSiteContent(): Promise<BilingualSiteContent> {
   const doc = await SiteSettings.findOne({ key: MAIN_KEY }).lean();
-  const raw = doc?.data;
-  return mergeSiteContent(DEFAULT_SITE_CONTENT, raw);
+  return normalizeBilingualFromApi(doc?.data);
 }

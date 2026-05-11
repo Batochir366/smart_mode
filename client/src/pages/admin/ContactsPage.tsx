@@ -27,11 +27,11 @@ export default function ContactsPage() {
       const res = await fetch(`${getApiBaseUrl()}/api/contact-messages?limit=100`, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      if (!res.ok) throw new Error('Failed to load messages')
+      if (!res.ok) throw new Error('Зурвас ачаалахад алдаа гарлаа')
       const body = (await res.json()) as { items: Row[] }
       setItems(body.items ?? [])
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Error')
+      setError(e instanceof Error ? e.message : 'Алдаа')
     } finally {
       setLoading(false)
     }
@@ -42,7 +42,7 @@ export default function ContactsPage() {
   }, [loadMessages])
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm('Delete this message permanently?')) return
+    if (!window.confirm('Энэ зурвасыг бүр мөсөн устгах уу?')) return
     const token = readAdminToken()
     if (!token) return
     setDeletingId(id)
@@ -53,12 +53,12 @@ export default function ContactsPage() {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (!res.ok) {
-        if (res.status === 404) throw new Error('Message was already removed.')
-        throw new Error('Could not delete message.')
+        if (res.status === 404) throw new Error('Зурвас аль хэдийн устсан байна.')
+        throw new Error('Зурвас устгах боломжгүй байна.')
       }
       setItems((prev) => prev.filter((m) => m.id !== id))
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Delete failed')
+      setError(e instanceof Error ? e.message : 'Устгал амжилтгүй')
     } finally {
       setDeletingId(null)
     }
@@ -66,14 +66,14 @@ export default function ContactsPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <h1 className="font-benzin text-2xl font-bold text-white">Contact messages</h1>
-      <p className="mt-2 text-sm text-neutral-400">Submissions from the public contact form.</p>
+      <h1 className="font-benzin text-2xl font-bold text-white">Холбоо барих зурвасууд</h1>
+      <p className="mt-2 text-sm text-neutral-400">Үзэгчдийн илгээсэн зурвасууд.</p>
 
-      {loading ? <p className="mt-8 text-sm text-neutral-500">Loading…</p> : null}
+      {loading ? <p className="mt-8 text-sm text-neutral-500">Ачааллаж байна…</p> : null}
       {error ? <p className="mt-8 text-sm text-red-400">{error}</p> : null}
 
       {!loading && !error && items.length === 0 ? (
-        <p className="mt-8 text-sm text-neutral-500">No messages yet.</p>
+        <p className="mt-8 text-sm text-neutral-500">Одоогоор зурвас алга.</p>
       ) : null}
 
       <ul className="mt-8 space-y-4">
@@ -97,7 +97,7 @@ export default function ContactsPage() {
                 className="shrink-0 rounded-lg border border-red-500/35 bg-red-500/10 px-3 py-1.5 text-xs font-medium text-red-200 transition hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-50"
                 onClick={() => void handleDelete(m.id)}
               >
-                {deletingId === m.id ? 'Deleting…' : 'Delete'}
+                {deletingId === m.id ? 'Устгаж байна…' : 'Устгах'}
               </button>
             </div>
             <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-neutral-200">{m.message}</p>
