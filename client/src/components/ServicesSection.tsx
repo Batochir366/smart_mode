@@ -581,7 +581,7 @@ function ServicesShowcaseLive() {
                         }}
                       >
                         <div className="mx-auto flex w-[90vw] max-w-[1500px] flex-col gap-6 text-left md:gap-8">
-                          <div className="max-w-[300px] md:max-w-[700px]">
+                          <div className="max-w-[300px] md:max-w-[850px]">
                             <h2 className="section-heading [&_*]:will-change-transform text-3xl md:text-8xl font-semibold leading-[1.03] normal-case">
                               {slide.heading}
                             </h2>

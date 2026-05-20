@@ -164,9 +164,9 @@ function HeadingContent({
       <div className="mt-8 flex items-center gap-3">
         <button
           type="button"
-          className="rounded-full bg-brand px-6 py-2 text-sm font-semibold text-neutral-950 transition hover:brightness-105 active:brightness-95 text-nowrap will-change-transform"
+          className="rounded-full bg-brand px-6 py-2 text-sm font-semibold text-neutral-950 transition hover:brightness-105 active:brightness-95 text-nowrap will-change-transform cursor-pointer"
           {...rw}
-          onClick={() => scrollToSection('brands')}
+          onClick={() => scrollToSection('products')}
         >
           <InlineField
             variant={variant}
@@ -182,7 +182,7 @@ function HeadingContent({
         </button>
         <button
           type="button"
-          className="rounded-full border border-neutral-600 bg-transparent px-6 py-2 text-sm font-semibold text-neutral-100 transition hover:border-neutral-400 text-nowrap will-change-transform"
+          className="rounded-full border border-neutral-600 bg-transparent px-6 py-2 text-sm font-semibold text-neutral-100 transition hover:border-neutral-400 text-nowrap will-change-transform cursor-pointer"
           {...rw}
           onClick={() => scrollToSection('about')}
         >

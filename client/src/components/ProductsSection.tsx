@@ -20,12 +20,28 @@ const RAIL_START_INSET =
 
 const PRODUCT_CARD_FRAME =
   'rounded-3xl bg-neutral-800 p-2.5'
-const PRODUCT_CARD_INNER = 'relative w-full shrink-0 overflow-hidden rounded-2xl'
+const PRODUCT_CARD_INNER =
+  'relative grid h-full min-h-0 w-full overflow-hidden rounded-2xl bg-black'
+const CARD_MEDIA_LAYER =
+  'pointer-events-none relative col-start-1 row-start-1 min-h-full w-full self-stretch'
+const CARD_MEDIA_GRADIENT =
+  'absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/5'
 
 const CARD_OVERLAY_BASE =
-  'absolute inset-x-0 bottom-0 top-[70%] flex max-h-full flex-col justify-start gap-4 overflow-y-auto overscroll-contain p-5 pb-6 sm:top-[70%] sm:p-6 sm:pb-7'
+  'relative z-10 flex flex-col gap-4 p-5 pb-6 sm:p-6 sm:pb-7'
 const CARD_TITLE_CLASS =
-  'font-benzin text-2xl font-bold leading-[1.08] tracking-tight text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.9)] md:text-3xl'
+  'break-words font-benzin text-2xl font-bold leading-[1.08] tracking-tight text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.9)] md:text-3xl'
+const CARD_BODY_CLASS =
+  'break-words text-[15px] font-medium leading-snug tracking-tight text-white/95 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] md:text-base'
+/** Pushes title to ~70% of card width. */
+const CARD_TEXT_LEAD = 'w-full shrink-0 pt-[70%]'
+/** Fills extra height when cards are equalized in the rail/grid. */
+const CARD_TEXT_TAIL = 'min-h-0 flex-1'
+const CARD_OVERLAY_COLUMN = 'col-start-1 row-start-1 flex h-full min-h-0 flex-col'
+const CARD_ARTICLE_LIVE = 'flex h-full min-h-0 w-full flex-col'
+const CARD_ARTICLE_ADMIN = 'flex h-full min-h-0 min-w-0 w-full flex-col'
+const RAIL_GRID_BASE =
+  'grid auto-cols-[min(92vw,430px)] grid-flow-col items-stretch gap-5 pb-6 pt-1'
 
 function usePrefersReducedMotion() {
   const [v, set] = useState(false)
@@ -53,47 +69,44 @@ function ImageCardControlled({
   onRemove?: () => void
 }) {
   const [busy, setBusy] = useState(false)
-  /** Admin sits in CSS grid — fill cell; live uses horizontal rail widths. */
-  const previewH =
-    variant === 'admin'
-      ? 'aspect-[4/5] min-h-[220px]'
-      : 'h-[min(82vh,540px)] md:h-[580px]'
+  const refresh = gsap.delayedCall(0.2, () => ScrollTrigger.refresh()).pause()
 
   return (
     <article
-      className={
-        variant === 'admin'
-          ? `flex min-w-0 w-full flex-col ${PRODUCT_CARD_FRAME}`
-          : `flex shrink-0 flex-col ${PRODUCT_CARD_FRAME} w-[min(92vw,430px)]`
-      }
+      className={`${variant === 'admin' ? CARD_ARTICLE_ADMIN : CARD_ARTICLE_LIVE} ${PRODUCT_CARD_FRAME}`}
     >
-      <div className={`${PRODUCT_CARD_INNER} ${previewH}`}>
-        <img
-          src={card.imageSrc}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover"
-          loading="lazy"
-          decoding="async"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/65 to-transparent" />
-
-        <div className={`${CARD_OVERLAY_BASE} [&_input,&_textarea]:pointer-events-auto`}>
-          <InlineField
-            variant={variant}
-            className={CARD_TITLE_CLASS}
-            value={card.name}
-            onChange={(next) => onPatch({ name: next })}
+      <div className={`${PRODUCT_CARD_INNER} h-full min-h-0 flex-1`}>
+        <div className={CARD_MEDIA_LAYER} aria-hidden>
+          <img
+            src={card.imageSrc}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover"
+            loading="lazy"
+            decoding="async"
+            onLoad={() => refresh.restart(true)}
           />
-          <div className="min-h-0 shrink">
+          <div className={CARD_MEDIA_GRADIENT} />
+        </div>
+
+        <div className={CARD_OVERLAY_COLUMN}>
+          <div className={CARD_TEXT_LEAD} aria-hidden />
+          <div className={`${CARD_OVERLAY_BASE} [&_input,&_textarea]:pointer-events-auto`}>
+            <InlineField
+              variant={variant}
+              className={CARD_TITLE_CLASS}
+              value={card.name}
+              onChange={(next) => onPatch({ name: next })}
+            />
             <InlineField
               variant={variant}
               as="textarea"
               rows={variant === 'admin' ? 3 : 4}
-              className="max-h-[min(22vh,180px)] text-[15px] font-medium leading-snug tracking-tight text-white/95 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] [field-sizing:content] md:text-base"
+              className={`${CARD_BODY_CLASS} [field-sizing:content]`}
               value={card.quote}
               onChange={(next) => onPatch({ quote: next })}
             />
           </div>
+          <div className={CARD_TEXT_TAIL} aria-hidden />
         </div>
       </div>
 
@@ -145,27 +158,31 @@ function ImageCardControlled({
 }
 
 function ImageCardLive({ card }: { card: ProductCard }) {
+  const refresh = gsap.delayedCall(0.2, () => ScrollTrigger.refresh()).pause()
+
   return (
-    <article
-      className={`relative flex h-[min(82vh,540px)] w-[min(92vw,430px)] shrink-0 flex-col md:h-[580px] ${PRODUCT_CARD_FRAME}`}
-    >
-      <div className={`${PRODUCT_CARD_INNER} min-h-0 flex-1`}>
-        <img
-          src={card.imageSrc}
-          alt={card.imageAlt}
-          className="absolute inset-0 h-full w-full object-cover"
-          loading="lazy"
-          decoding="async"
-          onLoad={() => ScrollTrigger.refresh()}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/65 to-transparent" />
-        <div className={`${CARD_OVERLAY_BASE} pointer-events-none`}>
-          <h3 className={CARD_TITLE_CLASS}>{card.name}</h3>
-          {card.quote.trim() ? (
-            <p className="text-[15px] font-medium leading-snug tracking-tight text-white/92 drop-shadow-[0_2px_12px_rgba(0,0,0,0.75)] md:text-base">
-              {card.quote}
-            </p>
-          ) : null}
+    <article className={`${CARD_ARTICLE_LIVE} ${PRODUCT_CARD_FRAME}`}>
+      <div className={`${PRODUCT_CARD_INNER} h-full min-h-0 flex-1`}>
+        <div className={CARD_MEDIA_LAYER} aria-hidden>
+          <img
+            src={card.imageSrc}
+            alt={card.imageAlt}
+            className="absolute inset-0 h-full w-full object-cover"
+            loading="lazy"
+            decoding="async"
+            onLoad={() => refresh.restart(true)}
+          />
+          <div className={CARD_MEDIA_GRADIENT} />
+        </div>
+        <div className={CARD_OVERLAY_COLUMN}>
+          <div className={CARD_TEXT_LEAD} aria-hidden />
+          <div className={`${CARD_OVERLAY_BASE} pointer-events-none`}>
+            <h3 className={CARD_TITLE_CLASS}>{card.name}</h3>
+            {card.quote.trim() ? (
+              <p className={`${CARD_BODY_CLASS} text-white/92`}>{card.quote}</p>
+            ) : null}
+          </div>
+          <div className={CARD_TEXT_TAIL} aria-hidden />
         </div>
       </div>
     </article>
@@ -225,11 +242,13 @@ export function ProductsSection() {
 
   const railFallback = useMemo(() => {
     if (!nativeHorizontalScroll) {
-      return ['flex min-w-max gap-5 pb-6 pt-1 will-change-transform', RAIL_START_INSET].filter(Boolean).join(' ')
+      return [RAIL_GRID_BASE, 'min-w-max will-change-transform', RAIL_START_INSET].filter(Boolean).join(' ')
     }
-    return ['flex gap-5 overflow-x-auto overflow-y-hidden pb-6 pt-1 snap-x snap-mandatory scrollbar-hide', RAIL_START_INSET].join(
-      ' ',
-    )
+    return [
+      RAIL_GRID_BASE,
+      'w-max max-w-none overflow-x-auto overflow-y-hidden snap-x snap-mandatory scrollbar-hide',
+      RAIL_START_INSET,
+    ].join(' ')
   }, [nativeHorizontalScroll])
 
   const patchCard = (index: number, next: ProductCard) => {
@@ -303,7 +322,7 @@ export function ProductsSection() {
             <div
               role="region"
               aria-label="Featured products"
-              className="grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-8 lg:grid-cols-4 lg:gap-8"
+              className="grid grid-cols-1 items-stretch gap-10 sm:grid-cols-2 sm:gap-8 lg:grid-cols-4 lg:gap-8"
             >
               {cards.map((card, i) => (
                 <ImageCardControlled
@@ -335,7 +354,7 @@ export function ProductsSection() {
                 nativeHorizontalScroll ? 'w-full overflow-x-auto overflow-y-hidden scrollbar-hide' : 'w-full overflow-hidden'
               }
             >
-              <div ref={trackRef} className={railFallback}>
+              <div ref={trackRef} className={`${railFallback} transform-gpu`}>
                 {cards.map((card) => (
                   <ImageCardLive key={card.id} card={card} />
                 ))}

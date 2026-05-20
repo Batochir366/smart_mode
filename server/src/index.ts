@@ -16,10 +16,7 @@ import { ContactMessage } from "./models/ContactMessage.js";
 import { SiteSettings } from "./models/SiteSettings.js";
 import { requireAuth } from "./middleware/requireAuth.js";
 import { ensureSiteContentSeeded, getMergedSiteContent } from "./seed.js";
-import {
-  bilingualSiteContentSchema,
-  contactFormSchema,
-} from "./validation.js";
+import { bilingualSiteContentSchema, contactFormSchema } from "./validation.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -51,7 +48,8 @@ app.use(
       }
       if (
         /^http:\/\/localhost:\d+$/.test(origin) ||
-        /^http:\/\/127\.0\.0\.1:\d+$/.test(origin)
+        /^http:\/\/127\.0\.0\.1:\d+$/.test(origin) ||
+        /^https?:\/\/159\.223\.40\.228$/
       ) {
         cb(null, true);
         return;
@@ -133,8 +131,7 @@ app.patch("/api/site-content", requireAuth, async (req, res) => {
     typeof req.body?.data === "object" && req.body.data != null
       ? req.body.data
       : req.body;
-  const body =
-    raw && typeof raw === "object" && !Array.isArray(raw) ? raw : {};
+  const body = raw && typeof raw === "object" && !Array.isArray(raw) ? raw : {};
 
   const parsed = bilingualSiteContentSchema.safeParse(body);
   if (!parsed.success) {
